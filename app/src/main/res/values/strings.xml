@@ -6,4 +6,7 @@
     <string name="settings_label">Settings</string>
     <string name="enable_geofences">Enable Geofences</string>
     <string name="google_api_value">AIzaSyCaumxfCaMdE48ZCtNnXH2cWJlr8SbsFco</string>
+    <string name="location_permissions_text">Location permissions</string>
+    <string name="location_permissions_granted">Location permissions granted</string>
+    <string name="ask_for_location_permission_text">To use the application properly, grant the location permission</string>
 </resources>
