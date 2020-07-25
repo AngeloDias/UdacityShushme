@@ -23,15 +23,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.PlaceViewHolder> {
+import com.google.android.gms.location.places.PlaceBuffer;
 
+public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.PlaceViewHolder> {
     private Context mContext;
+    private PlaceBuffer mPlaces;
 
     /**
      * Constructor using the context and the db cursor
      *
      * @param context the calling context/activity
      */
+    public PlaceListAdapter(Context context, PlaceBuffer places) {
+        this.mContext = context;
+        this.mPlaces = places;
+    }
+
     public PlaceListAdapter(Context context) {
         this.mContext = context;
     }
@@ -48,6 +55,7 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.Plac
         // Get the RecyclerView item layout
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View view = inflater.inflate(R.layout.item_place_card, parent, false);
+
         return new PlaceViewHolder(view);
     }
 
@@ -59,9 +67,20 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.Plac
      */
     @Override
     public void onBindViewHolder(PlaceViewHolder holder, int position) {
+        String placeName = mPlaces.get(position).getName().toString();
+        String placeAddress = mPlaces.get(position).getAddress().toString();
 
+        holder.nameTextView.setText(placeName);
+        holder.addressTextView.setText(placeAddress);
     }
 
+    public void swapPlaces(PlaceBuffer newPlaces) {
+        mPlaces = newPlaces;
+
+        if(mPlaces != null) {
+            this.notifyDataSetChanged();
+        }
+    }
 
     /**
      * Returns the number of items in the cursor
@@ -70,21 +89,25 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.Plac
      */
     @Override
     public int getItemCount() {
-        return 0;
+        if(mPlaces == null) {
+            return 0;
+        }
+
+        return mPlaces.getCount();
     }
 
     /**
      * PlaceViewHolder class for the recycler view item
      */
     class PlaceViewHolder extends RecyclerView.ViewHolder {
-
         TextView nameTextView;
         TextView addressTextView;
 
         public PlaceViewHolder(View itemView) {
             super(itemView);
-            nameTextView = (TextView) itemView.findViewById(R.id.name_text_view);
-            addressTextView = (TextView) itemView.findViewById(R.id.address_text_view);
+
+            nameTextView = itemView.findViewById(R.id.name_text_view);
+            addressTextView = itemView.findViewById(R.id.address_text_view);
         }
 
     }

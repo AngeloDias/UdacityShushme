@@ -27,6 +27,8 @@
             android:name="com.example.android.shushme.provider.PlaceContentProvider"
             android:authorities="com.example.android.shushme"
             android:exported="false"/>
+        
+        <receiver android:name=".GeofenceBroadcastReceiver" />
 
     </application>
 
